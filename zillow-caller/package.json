@@ -1,0 +1,25 @@
+{
+  "name": "zillow-caller",
+  "version": "1.0.0",
+  "description": "",
+  "main": "caller.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://yannunes@bitbucket.org/yannunes/zillow-caller.git"
+  },
+  "author": "Yan Nunes",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/yannunes/zillow-caller#readme",
+  "dependencies": {
+    "body-parser": "^1.16.1",
+    "cors": "^2.8.1",
+    "express": "^4.14.1",
+    "lodash": "^4.17.4",
+    "path": "^0.12.7",
+    "public-ip": "^2.3.3",
+    "unirest": "^0.5.1"
+  }
+}

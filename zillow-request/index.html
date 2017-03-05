@@ -1,0 +1,85 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Cogent</title>
+  <meta name="description" content="Cogent">
+  <meta name="author" content="SitePoint">
+  <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="styles.css">
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+
+  <div class="container">
+    <form id="contact">
+      <h3>Simple form for API Testing</h3>
+      <!--fieldset>
+        <input class="street" name="street" placeholder="Street" type="text" tabindex="1" required autofocus>
+      </fieldset>
+      <fieldset>
+        <input class="city" name="city" placeholder="City" type="text" tabindex="2" required>
+      </fieldset>
+      <fieldset>
+        <input class="state" name="state" placeholder="State" type="text" tabindex="3" required>
+      </fieldset>
+      <fieldset>
+        <input class="zip" name="zip" placeholder="ZIP" type="text" tabindex="4" required>
+      </fieldset-->
+      <fieldset>
+        <textarea class="complete" name="complete" placeholder="Address" required autofocus></textarea>
+      </fieldset>
+      <fieldset>
+        <button class="button" name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
+      </fieldset>
+      <p class="copyright">Designed by <a href="https://colorlib.com" target="_blank" title="Colorlib">Colorlib</a></p>
+    </form>
+  </div>
+
+
+
+  <script >
+
+    $(document).ready(function(){
+
+
+
+      $(".button").click(function(e){
+        e.preventDefault()
+        // var street = $('.street')[0].value
+        // var city = $('.city')[0].value
+        // var state = $('.state')[0].value
+        // var zip = $('.zip')[0].value
+
+        var xmlRequest = $('.complete')[0].value //"<Dataservice_request><properties><property><Address>"+street+"</Address><City>"+city+"</City><State>"+state+"</State><Zip>"+zip+"</Zip><ZsID/></property></properties></Dataservice_request>"
+        console.log(xmlRequest)
+
+        $.ajax({
+          type: "POST",
+          url: 'http://52.38.92.36:443/zillowrequest/api', //AWS
+          data: {data: xmlRequest},
+          dataType: 'xml',
+          success: function(result){
+            alert("Check the console for the response!!")
+            console.log(result)
+          },
+          error: function(err){
+            alert("Check the console for the ERROR!!")
+            console.log(err)
+          }
+        })
+      })
+
+    })
+
+  </script>
+</body>
+</html>
