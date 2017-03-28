@@ -26,8 +26,7 @@ const mongoose = require('mongoose')
 const unirest = require('unirest')
 const config_obj = require('./config.json')
 const q = require('q')
-const schedule = require('node-schedule')
-
+const mongooseSchedule = require('mongoose-schedule')
 
 if(!config_obj.ROUTER_IP || !config_obj.ROUTER_PORT || !config_obj.REQUEST_IP || !config_obj.REQUEST_PORT) {
   return console.log(new Error({error: "Please, fill in the config_obj.json properly"}))
@@ -291,17 +290,31 @@ db.once('open', function () {
 
   var Caller = mongoose.model('Callers', dataSchema)
 
-  function Cron (date) {
-    this.newDate = new Date(date.setTime( date.getTime() + 86400000 ))
-    this.schedule = {}
-    this.setup = (args) => {
-      this.schedule = schedule.scheduleJob(this.newDate, function(){
-        Caller.findOneAndUpdate(args).where('active', true).exec((err, doc) => {
-          if (err) return console.log(new Error(err))
-          //RESET OK
-        })
-      })
-    }
+  function cron (date, model, args) {
+
+    var newDate = new Date(date.setTime( date.getTime() + 86400000 ))
+
+    mongooseSchedule.job({
+      data: {
+        model: model,
+        method: 'findOneAndUpdate',
+        execution_date: newDate
+        args: args
+      }
+    }, () {
+      console.log(model + " was reset!")
+    })
+
+    // this.newDate = new Date(date.setTime( date.getTime() + 86400000 ))
+    // this.schedule = {}
+    // this.setup = (args) => {
+    //   this.schedule = schedule.scheduleJob(this.newDate, function(){
+    //     Caller.findOneAndUpdate(args).where('active', true).exec((err, doc) => {
+    //       if (err) return console.log(new Error(err))
+    //       //RESET OK
+    //     })
+    //   })
+    // }
   }
 
   app.get('/zillowrouter/getzillowdata', (req, res) => {
@@ -326,9 +339,10 @@ db.once('open', function () {
                 res.json(response)
               })
           } else {
-            //NODE CRON HERE TO RESET THE COUNT IN 24H
-            var cron = new Cron(doc.lastAccess)
-            cron.setup({$set: {currentCount: 0}})
+            cron(doc.lastAccess, doc, {
+              doc,
+              {$set: {currentCount: 0}}
+            })
           }
         })
     } else {

@@ -28,6 +28,7 @@
     "jstoxml": "^0.2.4",
     "lodash": "^4.17.4",
     "mongoose": "^4.8.4",
+    "mongoose-schedule": "^1.1.1",
     "node-schedule": "^1.2.0",
     "npm": "^4.2.0",
     "numeral": "^2.0.4",
